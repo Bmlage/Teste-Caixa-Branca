@@ -1,0 +1,26 @@
+# Projeto: Sistema de Login
+
+## Descrição do Projeto
+Este projeto implementa um sistema de autenticação básico em Java, utilizando um banco de dados MySQL para validar as credenciais dos usuários (login e senha).
+
+## Funcionalidades
+- Conexão com o banco de dados utilizando `DriverManager`.
+- Validação de credenciais de usuários no banco de dados.
+- Retorna o nome do usuário autenticado quando o login é bem-sucedido.
+
+## Estrutura do Código
+### Classe `User`
+- **`conectarBD()`**: Realiza a conexão com o banco de dados MySQL.
+- **`verificarUsuario(String login, String senha)`**: Valida o login e a senha fornecidos.
+
+## Documentação do Código
+A documentação do projeto foi gerada utilizando o **Javadoc**. Para visualizar:
+1. Navegue até o diretório `doc/`.
+2. Abra o arquivo `index.html` em qualquer navegador.
+
+## Como Executar
+1. Configure um banco de dados MySQL com a tabela `usuarios` contendo as colunas `nome`, `login` e `senha`.
+2. Atualize a string de conexão no método `conectarBD()` com suas credenciais do banco.
+3. Compile o código:
+   ```bash
+   javac User.java
