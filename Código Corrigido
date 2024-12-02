@@ -1,0 +1,67 @@
+package login;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+/**
+ * Classe responsável por gerenciar a autenticação de usuários no sistema.
+ * Contém métodos para conexão com o banco de dados e verificação de credenciais.
+ */
+public class User {
+
+    /**
+     * Estabelece uma conexão com o banco de dados MySQL.
+     *
+     * @return Um objeto Connection para interagir com o banco de dados, ou null caso a conexão falhe.
+     */
+    public Connection conectarBD() {
+        Connection conn = null;
+        try {
+            // Carrega o driver JDBC do MySQL
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // URL de conexão com o banco de dados, incluindo credenciais
+            String url = "jdbc:mysql://127.0.0.1/test?user=lopes&password=123";
+            conn = DriverManager.getConnection(url);
+        } catch (Exception e) {
+            // Imprime o erro no console para diagnóstico
+            e.printStackTrace();
+        }
+        return conn;
+    }
+
+    /**
+     * Verifica se as credenciais fornecidas correspondem a um usuário válido no banco de dados.
+     *
+     * @param login O login do usuário.
+     * @param senha A senha do usuário.
+     * @return true se o usuário for encontrado, false caso contrário.
+     */
+    public boolean verificarUsuario(String login, String senha) {
+        boolean result = false;
+
+        // Consulta SQL para verificar as credenciais
+        String sql = "SELECT nome FROM usuarios WHERE login = ? AND senha = ?";
+        try (Connection conn = conectarBD();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Define os parâmetros da consulta
+            pstmt.setString(1, login);
+            pstmt.setString(2, senha);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // Usuário encontrado, retorna true
+                    result = true;
+                    System.out.println("Usuário encontrado: " + rs.getString("nome"));
+                }
+            }
+        } catch (Exception e) {
+            // Imprime o erro no console para diagnóstico
+            e.printStackTrace();
+        }
+        return result;
+    }
+}
