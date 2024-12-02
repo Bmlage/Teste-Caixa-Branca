@@ -1,0 +1,49 @@
+1. Vulnerabilidade a SQL Injection
+  Problema: A consulta SQL utiliza concatenação direta de strings (sql += "where login = '" + login + "' and senha = '" + senha + "';").
+  Impacto: Permite que um invasor execute comandos maliciosos no banco de dados.
+  Solução: Utilize Prepared Statements para parametrizar as consultas.
+
+2. Conexão não encerrada
+  Problema: A conexão com o banco de dados (Connection conn) não é fechada, o que pode causar vazamentos de recursos.
+  Impacto: Desempenho degradado e esgotamento de conexões disponíveis.
+  Solução: Utilize o bloco try-with-resources para fechar automaticamente Connection, Statement e ResultSet.
+
+3. Exceções sem tratamento
+  Problema: Exceções capturadas no código não possuem mensagens ou logs para rastreamento.
+  Impacto: Dificulta a depuração de erros e identificação de falhas.
+  Solução: Registre as exceções usando e.printStackTrace() ou uma biblioteca de logs como SLF4J ou Log4j.
+
+4. Uso de classes de driver desatualizadas
+  Problema: A classe com.mysql.Driver e o método .newInstance() estão obsoletos.
+  Impacto: Falhas de compatibilidade em versões mais recentes do driver MySQL.
+  Solução: Remova Class.forName() se o driver estiver no classpath, pois o carregamento é feito automaticamente.
+
+5. Senha no código-fonte
+  Problema: Credenciais de banco de dados (usuário e senha) estão hardcoded na string de conexão.
+  Impacto: Risco de exposição e comprometimento de segurança.
+  Solução: Utilize variáveis de ambiente ou arquivos de configuração externos para armazenar credenciais.
+
+6. Conexão sem suporte a SSL
+  Problema: A string de conexão não especifica o uso de SSL para comunicação segura.
+  Impacto: Dados sensíveis podem ser interceptados durante a transmissão.
+  Solução: Adicione parâmetros para habilitar SSL, como useSSL=true&requireSSL=true.
+
+7. Falta de validação de entrada
+  Problema: Os valores de login e senha não são validados antes de serem usados na consulta SQL.
+  Impacto: Possibilidade de erros inesperados ou inserção de dados inválidos.
+  Solução: Valide se os valores não estão vazios ou nulos antes de prosseguir.
+
+8. Não uso de hash de senha
+  Problema: As senhas são armazenadas no banco de dados como texto plano.
+  Impacto: Em caso de vazamento de dados, todas as senhas ficam comprometidas.
+  Solução: Utilize hash de senha, como BCrypt, para armazenamento seguro.
+
+9. ResultSet não fechado
+  Problema: O objeto ResultSet não é explicitamente fechado após o uso.
+  Impacto: Pode causar vazamentos de memória.
+  Solução: Use try-with-resources ou chame o método close() após o uso.
+
+10. Código desnecessariamente complicado
+  Problema: O método verificarUsuario é mais detalhado do que o necessário para uma funcionalidade simples.
+  Impacto: Dificulta a manutenção e compreensão do código.
+  Solução: Refatore o método para torná-lo mais simples e modular.
